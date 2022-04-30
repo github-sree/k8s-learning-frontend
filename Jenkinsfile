@@ -20,10 +20,10 @@ node {
         }
     }
 
-    stage('clean kubernetes deployment') {
-        sh 'kubectl delete deploy k8s-frontend'
-        sh 'kubectl delete svc k8s-frontend-service'
-    }
+    // stage('clean kubernetes deployment') {
+    //     sh 'kubectl delete deploy k8s-frontend'
+    //     sh 'kubectl delete svc k8s-frontend-service'
+    // }
 
     stage('deploy to kubernetes'){
         sh 'kubectl apply -f deploy-components/ng-deployment.yaml'
