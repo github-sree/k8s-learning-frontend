@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'k8s-learning-frontend';
+  title = '!!k8s-learning-frontend-cluster reflected!!!!!!!!';
 }

@@ -26,6 +26,6 @@ node {
     // }
 
     stage('deploy to kubernetes') {
-            sh 'envsubst < deploy-components/ng-deployment.yaml | kubectl apply -f-'
+            sh "kubectl apply -f deploy-components/ng-deployment.yaml"
     }
 }
