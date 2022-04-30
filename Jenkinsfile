@@ -26,6 +26,11 @@ node {
     // }
 
     stage('deploy to kubernetes') {
-            sh "kubectl apply -f deploy-components/ng-deployment.yaml"
+        try {
+            sh 'kubectl delete deploy k8s-frontend'
+        }catch (Exception e) {
+            echo 'deployment not present'
+        }
+            sh 'kubectl apply -f deploy-components/ng-deployment.yaml'
     }
 }
