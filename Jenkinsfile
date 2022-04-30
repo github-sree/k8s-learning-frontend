@@ -26,8 +26,6 @@ node {
     // }
 
     stage('deploy to kubernetes') {
-        withCredentials([usernameColonPassword(credentialsId: 'k8s-token', variable: 'TOKEN')]) {
-            sh "kubectl apply -f deploy-components/ng-deployment.yaml --token=$TOKEN"
-        }
+            sh 'envsubst < deploy-components/ng-deployment.yaml | kubectl apply -f-'
     }
 }
