@@ -25,7 +25,9 @@ node {
     //     sh 'kubectl delete svc k8s-frontend-service'
     // }
 
-    stage('deploy to kubernetes'){
-        sh 'kubectl apply -f deploy-components/ng-deployment.yaml'
+    stage('deploy to kubernetes') {
+        withCredentials([string(credentialsId: 'k8s-token', variable: 'TOKEN')]) {
+            sh "kubectl apply -f deploy-components/ng-deployment.yaml --token=$TOKEN"
+        }
     }
 }
