@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: k8s-frontend
-          image: k8s-learning-frontend:1.0.0
+          image: sreedocker0798/k8s-learning-frontend:1.0.0
           ports:
             - containerPort: 80
 ---
