@@ -12,8 +12,8 @@ node {
     stage('docker build & push') {
         // sh 'docker build -t sreedocker0798/k8s-learning-frontend:1.0.0 .'
         // sh 'docker push sreedocker0798/k8s-learning-frontend:1.0.0'
-        docker.withRegistry('sreedocker0798', 'docker-credential') {
-            def customImage = docker.build('k8s-learning-frontend:1.0.0')
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-credential') {
+            def customImage = docker.build('sreedocker0798/k8s-learning-frontend:1.0.0')
 
         /* Push the container to the custom Registry */
             customImage.push()
