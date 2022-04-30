@@ -2,7 +2,7 @@ node {
     stage('checkout') {
         git branch: 'dev',
        credentialsId: 'github-sree',
-       url: 'https://github.com/github-sree/github-sree.git'
+       url: 'https://github.com/github-sree/k8s-learning-frontend.git'
     }
     stage('ng dist build') {
         sh 'ng build'
