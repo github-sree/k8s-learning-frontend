@@ -5,6 +5,7 @@ node {
        url: 'https://github.com/github-sree/k8s-learning-frontend.git'
     }
     stage('ng dist build') {
+        sh 'npm install --save'
         sh 'ng build'
     }
 
