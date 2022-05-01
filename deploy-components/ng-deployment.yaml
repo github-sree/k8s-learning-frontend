@@ -15,7 +15,7 @@ spec:
       containers:
         - name: k8s-frontend
           image: sreedocker0798/k8s-learning-frontend:1.0.0
-          imagePullPolicy: always
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
 ---
