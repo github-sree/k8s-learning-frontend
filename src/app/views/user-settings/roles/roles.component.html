@@ -1,0 +1,218 @@
+<c-callout class="bg-white:dark:bg-transparent" color="dark">
+    <c-row ngPreserveWhitespaces>
+        <c-col xs="12">
+            <c-card class="mb-4">
+                <c-card-header ngPreserveWhitespaces>
+                    <strong>Create Roles</strong>
+                   
+                </c-card-header>
+                <c-card-body>
+                  
+                    <form #roleForm="ngForm" (ngSubmit)="onSubmit()" [validated]="roleValidated" cForm
+                        class="needs-validation">
+                        <p class="text-medium-emphasis small">
+                            The behaviour expected of an individual who occupies a given social position or status.
+                            This is usually assign to users to perform some actions in this applications
+                        </p>
+
+                        <div [cFormFloating]="true" class="mb-3">
+                            <input cFormControl id="roleName" placeholder="Role Name" type="text" required />
+                            <label cLabel for="floatingInput">Role Name</label>
+                            <c-form-feedback [valid]="false">Rolename is required!</c-form-feedback>
+                        </div>
+                        <div id="role">
+                            <label cLabel><strong>Select Role status</strong></label>
+                            <c-form-check>
+                                <input cFormCheckInput id="roleActive" name="roleStatus" value="true" type="radio"
+                                    required />
+                                <label cFormCheckLabel for="roleActive">Active</label>
+                                <c-form-feedback [valid]="false">Role status is required!</c-form-feedback>
+                            </c-form-check>
+                            <c-form-check>
+                                <input cFormCheckInput id="roleInActive" name="roleStatus" value="false" type="radio" />
+                                <label cFormCheckLabel for="roleInActive">Inactive</label>
+                            </c-form-check>
+                        </div>
+
+
+                        <c-col xs="12">
+                            <c-card class="mb-4">
+                                <c-card-header ngPreserveWhitespaces>
+                                    <div><strong>Select Privileges</strong></div>
+                                </c-card-header>
+                                <c-card-body>
+                                    <pre class="text-medium-emphasis small">
+<b>Instructions</b>
+1. Click on the privilege names to add the cart.
+2. You can move either by clicking move or move all button for assigning the privileges to corresponding roles creation
+                                </pre>
+
+
+                                    <div class="row g-3">
+                                        <c-col md="5">
+                                            <c-card class="mb-4">
+                                                <span class="badge bg-danger text-wrap"
+                                                    *ngIf="items.length!=0">{{items.length}} items selected for moving
+                                                    privileges</span>
+                                                <c-card-header>
+                                                    <select aria-label="Multiple select example" cSelect multiple
+                                                        sizing="sm" size="10">
+                                                        <option *ngFor="let privilege of privileges"
+                                                            value="{{privilege}}" (click)="AddtoArray(privilege)">
+                                                            <span> {{privilege}}</span>
+                                                        </option>
+
+                                                    </select>
+
+                                                </c-card-header>
+                                            </c-card>
+                                        </c-col>
+                                        <c-col md="2" class="text-center">
+                                            <div> <button cButton type="button" class="mt-3 text-white" color="info"
+                                                    cTooltip="Move clicked item to cart" cTooltipPlacement="top"
+                                                    (click)="pushItem()">
+                                                    <svg cIcon name="cilChevronRight" size="lg"></svg></button>
+                                            </div>
+                                            <div>
+                                                <button cButton type="button" class="mt-3 text-white" color="warning"
+                                                    cTooltip="Move all the item to cart" cTooltipPlacement="top"
+                                                    (click)="pushAllItem()">
+                                                    <svg cIcon name="cilChevronRight" size="lg"></svg>
+                                                    <svg cIcon name="cilChevronRight" size="lg"></svg>
+                                                </button>
+                                            </div>
+                                            <div> <button cButton type="button" class="mt-3 text-white" color="info"
+                                                    cTooltip="Revert the selected item from the cart"
+                                                    cTooltipPlacement="top" (click)="clearItem()">
+                                                    <svg cIcon name="cilChevronLeft" size="lg"></svg>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button cButton type="button" class="mt-3 text-white" color="warning"
+                                                    cTooltip="Revert all the item from the cart" cTooltipPlacement="top"
+                                                    (click)="clearAllItem()">
+                                                    <svg cIcon name="cilChevronLeft" size="lg"></svg>
+                                                    <svg cIcon name="cilChevronLeft" size="lg"></svg>
+                                                </button>
+                                            </div>
+
+                                        </c-col>
+                                        <c-col md="5">
+                                            <c-card class="mb-4">
+                                                <span class="badge bg-danger text-wrap"
+                                                    *ngIf="targetItems.length!=0">{{targetItems.length}} items selected
+                                                    for
+                                                    creating privileges</span>
+                                                <c-card-header>
+                                                    <select aria-label="Multiple select example" cSelect multiple
+                                                        sizing="sm" size="10" id="selectedPrivileges">
+                                                        <option *ngFor="let privilege of targetItems"
+                                                            value="{{privilege}}" (click)="clearFromArray(privilege)">
+                                                            {{privilege}}
+                                                        </option>
+
+                                                    </select>
+
+                                                </c-card-header>
+                                                
+                                            </c-card>
+                                        </c-col>
+
+
+                                    </div>
+                                    <c-row>
+                                        <c-col md="6">
+                                            <button cButton color="success" type="submit"
+                                                class="text-white float-left">Create
+                                                / Update
+                                                Role</button>
+                                        </c-col>
+                                        <c-col md="6">
+                                            <button cButton class="px-4 text-white float-end" color="warning"
+                                                type="button" (click)="resetItems()">
+                                                Reset Selection
+                                            </button>
+                                        </c-col>
+                                    </c-row>
+
+
+
+
+
+                                </c-card-body>
+                            </c-card>
+                        </c-col>
+                    </form>
+                    <c-col xs="12" id="roleList" class="mt-2">
+                        <c-card class="mb-4">
+                            <c-card-header ngPreserveWhitespaces>
+                                <div><strong>Roles List</strong></div>
+                            </c-card-header>
+                            <c-card-body>
+                                <span class="text-medium-emphasis small">
+                                    Saved roles will be showed here
+                                </span>
+                                <div class="col-2">
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-auto">
+                                            <label class="control-label" for="noOfRows">No. of Rows</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="noOfRows" (change)="onTableSizeChange($event)"
+                                                class="form-select form-select-sm">
+                                                <option *ngFor="let size of tableSize" [ngValue]="size">
+                                                    {{ size }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table [striped]="true" cTable>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Action</th>
+                                            <th scope="col" (click)="onSort('roleName',sorting)">Rolename</th>
+                                            <th scope="col">Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="roles.length>0">
+                                        <tr *ngFor="let role of roles| paginate : pagingConfig; let i = index; trackBy: idTrackBy ">
+                                            <td><button cButton type="button" class="mt-3" color="warning"
+                                                    (click)="passValue(role)">Edit</button>
+                                                <button cButton type="button" class="mt-3"
+                                                    color="danger">Delete</button>
+                                            </td>
+                                            <td>{{role.roleName}}</td>
+                                            <td>{{role.active}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="roles.length==0">
+                                        <td colspan="3" ><strong>No Roles found</strong></td>
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center" *ngIf="roles.length>0">
+                                    <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                        (pageChange)="onTableDataChange($event)">
+                                    </pagination-controls>
+                                </div>
+                            </c-card-body>
+                        </c-card>
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-callout>
+<c-toaster [placement]="position" class="p-3" position="fixed">
+    <c-toast
+      (timer)="onTimerChange($event)"
+      (visibleChange)="onVisibleChange($event)"
+      [visible]="visible">
+      <c-toast-header>
+      </c-toast-header>
+      <c-toast-body>
+        <p>{{successMessage}}</p>
+        <p>{{errorMessage}}</p>
+      </c-toast-body>
+    </c-toast>
+  </c-toaster>

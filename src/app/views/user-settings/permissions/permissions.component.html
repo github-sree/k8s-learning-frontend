@@ -1,0 +1,110 @@
+<c-callout class="bg-white:dark:bg-transparent" color="dark">
+    <c-row ngPreserveWhitespaces>
+        <c-col xs="12">
+            <c-card class="mb-4">
+                <c-card-header ngPreserveWhitespaces>
+                    <strong>Create Privilege</strong>
+                    <p class="text-medium-emphasis small">
+                        A special right, advantage, or immunity granted or available only to a particular person or
+                        group.
+                        This is usually assign to roles to configure(create, read, update, delete) actions in this
+                        applications.
+                    </p>
+                </c-card-header>
+                <c-card-body>
+                
+                    <form #permissionForm="ngForm" (ngSubmit)="onSubmit()" [validated]="privilegeValidated" cForm
+                        class="needs-validation">
+
+                        <div [cFormFloating]="true" class="mb-3">
+                            <input cFormControl id="privilegeName" placeholder="Privilege Name" type="text" required />
+                            <label cLabel for="floatingInput">Privilege Name</label>
+                            <c-form-feedback [valid]="false">Privilege Name is required!</c-form-feedback>
+                        </div>
+                     
+                        <c-row>
+                           
+                            <c-col md="6">
+                                <button cButton color="success" type="submit" class="text-white float-left">Create
+                                    / Update
+                                    Privilege</button>
+                            </c-col>
+                            <c-col md="6">
+                                <button cButton class="px-4 text-white float-end" color="warning" type="button"
+                                    (click)="resetItems()">
+                                    Reset Selection
+                                </button>
+                            </c-col>
+                        </c-row>
+                    </form>
+                    <c-col xs="12" id="roleList" class="mt-2">
+                        <c-card class="mb-4">
+                            <c-card-header ngPreserveWhitespaces>
+                                <div><strong>Privilege List</strong></div>
+                            </c-card-header>
+                            <c-card-body>
+                                <span class="text-medium-emphasis small">
+                                    Saved Privileges will be showed here
+                                </span>
+                                <div class="col-2">
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-auto">
+                                            <label class="control-label" for="noOfRows">No. of Rows</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="noOfRows" (change)="onTableSizeChange($event)"
+                                                class="form-select form-select-sm">
+                                                <option *ngFor="let size of tableSize" [ngValue]="size">
+                                                    {{ size }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table [striped]="true" cTable>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Action</th>
+                                            <th scope="col" (click)="onSort('roleName',sorting)">Rolename</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let privilege of privilegeList | paginate : pagingConfig; let i = index; trackBy: idTrackBy ">
+                                            <td><button cButton type="button" class="mt-3" color="warning"
+                                                    (click)="passValue(privilege)">Edit</button>
+                                                <button cButton type="button" class="mt-3"
+                                                    color="danger">Delete</button>
+                                            </td>
+                                            <td>{{privilege.name}}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center">
+                                    <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                        (pageChange)="onTableDataChange($event)">
+                                    </pagination-controls>
+                                </div>
+                            </c-card-body>
+                        </c-card>
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-callout>
+<c-toaster [placement]="position" class="p-3" position="fixed" color="info">
+    <c-toast
+      (timer)="onTimerChange($event)"
+      (visibleChange)="onVisibleChange($event)"
+      [visible]="visible" [color]="color">
+      <c-toast-header>
+      </c-toast-header>
+      <c-toast-body>
+        <p>{{successMessage}}</p>
+        <p>{{errorMessage}}</p>
+      </c-toast-body>
+    </c-toast>
+  </c-toaster>

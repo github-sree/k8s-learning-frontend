@@ -1,17 +1,21 @@
 import { Component } from '@angular/core';
-import { AuthCreateRequest } from '../../../model/auth.model'
+import { AuthCreateRequest } from '../../../model/auth.model';
+import { AuthService } from '../../../services/http/auth.service';
+import { Router } from '@angular/router';
+
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'app-setup',
+  templateUrl: './setup.component.html',
+  styleUrls: ['./setup.component.scss']
 })
-export class RegisterComponent {
+export class SetupComponent {
   register: AuthCreateRequest = new AuthCreateRequest();
-  registerstylesValidated = false; errorMessage = '';
+  setupValidated = false;
+  errorMessage = '';
   visible: boolean = false;
   position = 'bottom-end';
   percentage = 0;
-  constructor() { }
+  constructor(private registerService: AuthService, private router: Router) { }
 
   onSubmit() {
     this.register.firstName = (<HTMLInputElement>document.getElementById('firstName')).value;
@@ -20,11 +24,18 @@ export class RegisterComponent {
     this.register.email = (<HTMLInputElement>document.getElementById('email')).value;
     this.register.password = (<HTMLInputElement>document.getElementById('password')).value;
     this.register.rePassword = (<HTMLInputElement>document.getElementById('rePassword')).value;
-    console.log(this.register);
-    if (this.validateRegister(this.register)) {
 
+    if (this.validateRegister()) {
+      this.registerService.setupRegisteration(this.register).subscribe({
+        next: () => { this.router.navigate(['/login']) },
+        error: (error) => {
+          this.errorMessage = error.error.message;
+          this.visible = true;
+        },
+
+      });
     }
-    this.registerstylesValidated = true;
+    this.setupValidated = true;
   }
 
   onVisibleChange($event: boolean) {
@@ -36,7 +47,7 @@ export class RegisterComponent {
     this.percentage = $event * 25;
   }
 
-  validateRegister(register: AuthCreateRequest) {
+  validateRegister() {
     if (this.register.firstName == '' || this.register.firstName.trim().length <= 5) {
       this.errorMessage = 'Firstname is too short';
       return false;
@@ -63,5 +74,3 @@ export class RegisterComponent {
     return true;
   }
 }
-
-

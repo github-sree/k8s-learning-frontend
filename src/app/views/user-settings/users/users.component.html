@@ -1,0 +1,124 @@
+<c-callout class="bg-white:dark:bg-transparent" color="dark">
+    <c-row ngPreserveWhitespaces>
+        <c-col xs="12">
+            <c-card class="mb-4">
+                <c-card-header ngPreserveWhitespaces>
+                    <strong>Create User</strong>
+                </c-card-header>
+                <c-card-body>
+                  
+                    <form #roleForm="ngForm" (ngSubmit)="onSubmit()" [validated]="userValidated" cForm
+                        class="needs-validation">
+                        <p class="text-medium-emphasis small">
+                            The behaviour expected of an individual who occupies a given social position or status.
+                            This is usually assign to users to perform some actions in this applications
+                        </p>
+                        <span class="badge bg-danger text-wrap">{{errorMessage}}</span>
+                        <c-input-group class="mb-3">
+                            <span cInputGroupText>
+                              <svg cIcon name="cilUser"></svg>
+                            </span>
+                            <input autoComplete="firstName" cFormControl placeholder="Firstname" id="firstName" required/>
+                            <c-form-feedback [valid]="false">Firstname is required!</c-form-feedback>
+                          </c-input-group> <c-input-group class="mb-3">
+                            <span cInputGroupText>
+                              <svg cIcon name="cilUser"></svg>
+                            </span>
+                            <input autoComplete="lastName" cFormControl placeholder="Lastname" id="lastName" required/>
+                            <c-form-feedback [valid]="false">LastName is required!</c-form-feedback>
+                          </c-input-group> <c-input-group class="mb-3">
+                            <span cInputGroupText>
+                              <svg cIcon name="cilUser"></svg>
+                            </span>
+                            <input autoComplete="userName" cFormControl placeholder="Username" id="userName" required/>
+                            <c-form-feedback [valid]="false">Username is required!</c-form-feedback>
+                          </c-input-group>
+                          <c-input-group class="mb-3">
+                            <span cInputGroupText>@</span>
+                            <input autoComplete="email" cFormControl placeholder="Email" id="email" required/>
+                            <c-form-feedback [valid]="false">email is required!</c-form-feedback>
+                          </c-input-group>
+                          <c-input-group class="mb-3">
+                            <span cInputGroupText>@</span>
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="roleName" required>
+                                <option value="">Select Role</option>
+                                <option *ngFor="let role of roleNameList" value="{{role}}">{{role}}</option>
+                              </select>
+                              <c-form-feedback [valid]="false">Role is required!</c-form-feedback>
+                          </c-input-group>
+                         
+                          <c-row class="mt-3">
+               
+                            <c-col xs="6">
+                              <button cButton class="px-4" color="success" type="submit">
+                                <span>
+                                  <svg cIcon name="cilUser"></svg>
+                                </span>
+                                 Create User
+                              </button>
+                            </c-col>
+                            <c-col class="text-right" xs="6">
+                              <button cButton class="px-4" color="warning">
+                               Reset
+                              </button>
+                            </c-col>
+                          </c-row>
+                    </form>
+                    <c-col xs="12" id="roleList" class="mt-2">
+                      <c-card class="mb-4">
+                          <c-card-header ngPreserveWhitespaces>
+                              <div><strong>User List</strong></div>
+                          </c-card-header>
+                          <c-card-body>
+                              <span class="text-medium-emphasis small">
+                                  Saved roles will be showed here
+                              </span>
+                              <div class="col-2">
+                                  <div class="row g-3 align-items-center">
+                                      <div class="col-auto">
+                                          <label class="control-label" for="noOfRows">No. of Rows</label>
+                                      </div>
+                                      <div class="col-auto">
+                                          <select name="noOfRows" (change)="onTableSizeChange($event)"
+                                              class="form-select form-select-sm">
+                                              <option *ngFor="let size of tableSize" [ngValue]="size">
+                                                  {{ size }}
+                                              </option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <table [striped]="true" cTable>
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Action</th>
+                                          <th scope="col">Username</th>
+                                          <th scope="col">Active</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor="let user of userList | paginate : pagingConfig; let i = index">
+                                          <td><button cButton type="button" class="mt-3" color="warning"
+                                                 
+                                                  >Edit</button>
+                                              <button cButton type="button" class="mt-3"
+                                                  color="danger">Delete</button>
+                                          </td>
+                                          <td>{{user.userName}}</td>
+                                          <td>{{user.enabled}}</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                              <div class="d-flex justify-content-center">
+                                  <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                      (pageChange)="onTableDataChange($event)">
+                                  </pagination-controls>
+                              </div>
+                          </c-card-body>
+                      </c-card>
+                  </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-callout>

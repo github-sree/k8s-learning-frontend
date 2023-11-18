@@ -39,7 +39,7 @@
           <svg cIcon name="cilList" size="lg"></svg>
         </a>
       </c-nav-item>
-      <c-nav-item>
+      <c-nav-item *appHasRole='["1013"]'>
         <a routerLink="./" cNavLink>
           <svg cIcon name="cilEnvelopeOpen" size="lg"></svg>
         </a>
@@ -153,9 +153,9 @@
         <hr cDropdownDivider/>
       </li>
       <li>
-        <a routerLink="./" cDropdownItem>
+        <a (click)="signOut()" cDropdownItem>
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
-          Lock Account
+          Sign out
         </a>
       </li>
       <li></li>

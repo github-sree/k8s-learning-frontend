@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
 
@@ -107,9 +106,7 @@ export class DashboardComponent implements OnInit {
   ];
   public mainChart: IChartProps = {};
   public chart: Array<IChartProps> = [];
-  public trafficRadioGroup = new FormGroup({
-    trafficRadio: new FormControl('Month')
-  });
+
 
   ngOnInit(): void {
     this.initCharts();
@@ -120,7 +117,7 @@ export class DashboardComponent implements OnInit {
   }
 
   setTrafficPeriod(value: string): void {
-    this.trafficRadioGroup.setValue({ trafficRadio: value });
+   
     this.chartsData.initMainChart(value);
     this.initCharts();
   }
