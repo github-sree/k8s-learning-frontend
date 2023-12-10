@@ -10,14 +10,22 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   setupRegisteration(register: AuthCreateRequest) {
-    return this.http.post(Constants.API_ENDPOINT.concat(Constants.SETUP_USER), register);
+    return this.http.post<User>(Constants.API_ENDPOINT.concat(Constants.SETUP_USER), register, { withCredentials: true });
   }
 
   createUser(register: AuthCreateRequest) {
     return this.http.post(Constants.API_ENDPOINT.concat(Constants.CREATE_USER), register, { withCredentials: true });
   }
 
-  getUsers(pagination: Pagination){
+  verifyUser(userId: string, otp: string) {
+    return this.http.patch<User>(Constants.API_ENDPOINT.concat(Constants.VERIFY_USER).concat('/' + userId).concat('/' + otp), undefined, { withCredentials: true });
+  }
+
+  resendOTP(userId: string) {
+    return this.http.patch<User>(Constants.API_ENDPOINT.concat(Constants.RESEND_OTP).concat('/' + userId), undefined, { withCredentials: true });
+  }
+
+  getUsers(pagination: Pagination) {
     const params = new HttpParams({ fromObject: { ...pagination } });
     return this.http.get<UserList>(Constants.API_ENDPOINT.concat(Constants.CREATE_USER), { params: params, withCredentials: true });
   }

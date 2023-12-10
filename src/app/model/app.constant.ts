@@ -1,5 +1,5 @@
 //api
-export const API_ENDPOINT = "http://localhost:8090";
+export const API_ENDPOINT = "https://api-gateway-sree550k-dev.apps.sandbox-m3.1530.p1.openshiftapps.com/auth";
 export const SIGNIN = "/v1/auth/signin";
 export const SIGNOUT = "/v1/auth/signout";
 export const SETUP_USER="/v1/setup/user";
@@ -9,7 +9,8 @@ export const PRIVILEGE = '/v1/privilege';
 export const PRIVILEGE_NAMES = '/v1/privilege/name';
 export const ROLE_NAMES = '/v1/role/name';
 export const CREATE_USER='/v1/user';
-
+export const VERIFY_USER='/v1/setup/verify';
+export const RESEND_OTP='/v1/setup/resend';
 //navbar names
 export const USER_SETTINGS_NAV = 'User Settings';
 export const USER_SETTINGS_ROLES_NAV = 'Roles';
@@ -32,4 +33,6 @@ export const USER_READ = 'USER_READ';
 export const USER_UPDATE = 'USER_UPDATE';
 export const USER_DELETE = 'USER_DELETE';
 export const USER_ROLES_ASSIGN = 'USER_ROLES_ASSIGN';
+
+
 

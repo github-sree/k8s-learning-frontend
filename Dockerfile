@@ -1,12 +1,22 @@
-FROM nginx:alpine
-COPY /dist/k8s-learning-frontend /usr/share/nginx/html
-WORKDIR /usr/share/nginx/html
-# Permission
-RUN chown root /usr/share/nginx/html/*
-RUN chmod 755 /usr/share/nginx/html/*
+FROM ubuntu:20.04
+USER root
 
-# Expose port
-EXPOSE 80
+RUN apt update && \
+    apt install -y nginx
+ADD nginx.conf /etc/nginx/
 
-# Start
+RUN groupadd -g 1002360000 nginx && \
+useradd -l -r -d /home/nginx -u 1002360000 -g nginx nginx && \
+ chown -R nginx:nginx /var/log/nginx /var/lib/nginx && \
+ chown -R nginx:nginx /etc/nginx/* && chown -R nginx:nginx /var/run/ && \
+ chown -R nginx:nginx /usr/share/nginx/
+USER nginx
+## Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+## copy over the artifacts in dist folder to default nginx public folder
+COPY dist/ /usr/share/nginx/html
+
+EXPOSE 8099
+
 CMD ["nginx", "-g", "daemon off;"]

@@ -2,7 +2,7 @@
     <c-container>
         <c-row class="justify-content-center">
             <c-col lg="7" md="9" xl="9">
-                <c-card class="mx-6">
+                <c-card class="mx-6" *ngIf="!otpFlag">
                     <c-card-body class="p-4">
                         <form #setupForm="ngForm" (ngSubmit)="onSubmit()" [validated]="setupValidated" cForm
                             class="needs-validation">
@@ -11,53 +11,74 @@
                                 full permission to manage all the components of the sub users
                                 and can create users and assign roles with privileges for enhanced multi tenant account.
                             </p>
-                           
+                            <br>
+                            <p class="text-medium-emphasis">Please enter your firstname. This will be your Combination
+                                of display name in this application.</p>
+
                             <c-input-group class="mb-3">
                                 <span cInputGroupText>
                                     <svg cIcon name="cilUser"></svg>
                                 </span>
-                                <input autoComplete="firstName" cFormControl placeholder="Firstname" id="firstName"
-                                    required />
+                                <input autoComplete="firstName" class="fw-bold" cFormControl placeholder="Firstname"
+                                    id="firstName" required />
                                 <c-form-feedback [valid]="false">Firstname is required!</c-form-feedback>
-                            </c-input-group> <c-input-group class="mb-3">
+                            </c-input-group>
+                            <p class="text-medium-emphasis">Please enter your lastname. This will be your Combination of
+                                display name in this application.</p>
+                            <c-input-group class="mb-3">
                                 <span cInputGroupText>
                                     <svg cIcon name="cilUser"></svg>
                                 </span>
-                                <input autoComplete="lastName" cFormControl placeholder="Lastname" id="lastName"
-                                    required />
+                                <input autoComplete="lastName" class="fw-bold" cFormControl placeholder="Lastname"
+                                    id="lastName" required />
                                 <c-form-feedback [valid]="false">LastName is required!</c-form-feedback>
-                            </c-input-group> <c-input-group class="mb-3">
+                            </c-input-group>
+                            <p class="text-medium-emphasis">Enter unique username that will be used for login.</p>
+                            <c-input-group class="mb-3">
                                 <span cInputGroupText>
                                     <svg cIcon name="cilUser"></svg>
                                 </span>
-                                <input autoComplete="userName" cFormControl placeholder="Username" id="userName"
-                                    required />
+                                <input autoComplete="userName" class="fw-bold" cFormControl placeholder="Username"
+                                    id="userName" required />
                                 <c-form-feedback [valid]="false">Username is required!</c-form-feedback>
                             </c-input-group>
+                            <p class="text-medium-emphasis">Please provide correct email, You will receive OTP to verify
+                                this account creation</p>
                             <c-input-group class="mb-3">
                                 <span cInputGroupText>@</span>
-                                <input autoComplete="email" cFormControl placeholder="Email" id="email" required />
+                                <input autoComplete="email" class="fw-bold" cFormControl placeholder="Email" id="email"
+                                    required />
                                 <c-form-feedback [valid]="false">email is required!</c-form-feedback>
                             </c-input-group>
+                            <p class="text-medium-emphasis">Please provide strong password,
+                                This should be 8 characters long and combination of Albhabetic character
+                                and numeric numbers with symbols.
+                            </p>
                             <c-input-group class="mb-3">
                                 <span cInputGroupText>
                                     <svg cIcon name="cilLockLocked"></svg>
                                 </span>
-                                <input autoComplete="new-password" cFormControl placeholder="Password" id="password"
-                                    type="password" required />
+                                <input autoComplete="new-password" class="fw-bold" cFormControl placeholder="Password"
+                                    id="password" type="password" required />
                                 <c-form-feedback [valid]="false">Password is required!</c-form-feedback>
                             </c-input-group>
+                            <p class="text-medium-emphasis">Please provide confirm password,
+                                That should be the same as password entered above.
+                            </p>
                             <c-input-group class="mb-4">
                                 <span cInputGroupText>
                                     <svg cIcon name="cilLockLocked"></svg>
                                 </span>
-                                <input autoComplete="new-password" cFormControl placeholder="Repeat password"
-                                    type="password" id="rePassword" required />
+                                <input autoComplete="new-password" class="fw-bold" cFormControl
+                                    placeholder="Repeat password" type="password" id="rePassword" required />
                                 <c-form-feedback [valid]="false">Confirm password is required!</c-form-feedback>
-                               
+
                             </c-input-group>
                             <div class="d-grid">
-                                <button cButton color="success" type="submit">Create Account</button>
+                                <button cButton color="success" type="submit" class="text-white fw-bold">
+                                    <c-spinner aria-hidden="true" size="sm" *ngIf="progressing"></c-spinner>
+                                    Create
+                                    Account</button>
                             </div>
                             <!-- <c-row class="d-grid gap-2">
                   <c-col xs="12">
@@ -73,19 +94,66 @@
                         </form>
                     </c-card-body>
                 </c-card>
+
+                <c-card class="mx-6" *ngIf="otpFlag">
+                    <c-card-body class="p-4">
+                        <form #otpForm="ngForm" (ngSubmit)="onOTPSubmit()" [validated]="otpValidated" cForm
+                            class="needs-validation">
+                            <h1>Account Verification</h1>
+                            <p class="text-medium-emphasis">
+                                Welcome <strong>{{user.firstName}} {{user.lastName}}</strong>, Your OTP sent to your
+                                registered email. Please enter to verify this account and continue
+                                setup
+                            </p>
+                            <br>
+                            <p class="text-medium-emphasis">Please enter your 6 digit OTP to continue.</p>
+
+                            <c-input-group class="mb-3">
+                                <span cInputGroupText>
+                                    <svg cIcon name="cilUser"></svg>
+                                </span>
+                                <input autoComplete="OTP" class="fw-bold" cFormControl placeholder="Enter OTP" id="otp"
+                                    required />
+                                <button cButton color="danger" type="button" class="text-white fw-bold" (click)="resendOTP()">
+                                    <c-spinner aria-hidden="true" size="sm" *ngIf="progressing"></c-spinner>
+                                    Resend
+                                    OTP</button>
+                                <c-form-feedback [valid]="false">OTP is required!</c-form-feedback>
+                            </c-input-group>
+                            <div class="d-grid">
+                                <button cButton color="info" type="submit" class="text-white fw-bold">
+                                    <c-spinner aria-hidden="true" size="sm" *ngIf="vProgressing"></c-spinner>
+                                    Verify
+                                    Account</button>
+                            </div>
+                        </form>
+                    </c-card-body>
+                </c-card>
             </c-col>
         </c-row>
     </c-container>
 </div>
 <c-toaster [placement]="position" class="p-3" position="fixed">
-    <c-toast
-      (timer)="onTimerChange($event)"
-      (visibleChange)="onVisibleChange($event)"
-      [visible]="visible">
-      <c-toast-header>
-      </c-toast-header>
-      <c-toast-body>
-        <p>{{errorMessage}}</p>
-      </c-toast-body>
+    <c-toast #toast="cToast" (timer)="onErrorTimerChange($event)" (visibleChange)="onErrorVisibleChange($event)"
+        [visible]="visible" color="danger">
+        <div class="d-flex">
+            <c-toast-body>
+                <span class="text-white">{{errorMessage}}</span>
+            </c-toast-body>
+            <button aria-label="close" cButtonClose class="me-2 m-auto text-white"
+                (click)="toast.visible=false"></button>
+        </div>
     </c-toast>
-  </c-toaster>
+</c-toaster>
+<c-toaster [placement]="position" class="p-3" position="fixed">
+    <c-toast #oTtoast="cToast" (timer)="onTimerChange($event)" (visibleChange)="onVisibleChange($event)"
+        [visible]="otpVisible" color="success">
+        <div class="d-flex">
+            <c-toast-body>
+                <span class="text-white">{{otpMessage}}</span>
+            </c-toast-body>
+            <button aria-label="close" cButtonClose class="me-2 m-auto text-white"
+                (click)="oTtoast.visible=false"></button>
+        </div>
+    </c-toast>
+</c-toaster>

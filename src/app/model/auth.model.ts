@@ -69,7 +69,13 @@ export interface Pagable {
     totalItems: number;
 }
 
-export class User {
+export class CustomResponse {
+    status!:string;
+    message!:string;
+}
+
+export class User extends CustomResponse {
+    userId!:string;
     firstName!: string;
     lastName!: string;
     userName!: string;

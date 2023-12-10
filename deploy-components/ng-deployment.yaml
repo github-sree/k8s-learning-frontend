@@ -12,12 +12,22 @@ spec:
       labels:
         app: k8s-frontend
     spec:
+      securityContext:
+        runAsUser: 1002360000
+        runAsGroup: 1002360000
       containers:
         - name: k8s-frontend
           image: sreedocker0798/k8s-learning-frontend:1.0.0
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8099
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 200m
+            limits:
+              memory: 512Mi
+              cpu: 500m            
 ---
 apiVersion: v1
 kind: Service
@@ -30,5 +40,5 @@ spec:
     - protocol: TCP             
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP
 ---

@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
-import { BadgeModule, ButtonModule, CardModule, FormModule, GridModule, ProgressModule, ToastModule } from '@coreui/angular';
+import { BadgeModule, ButtonModule, CardModule, FormModule, GridModule, ProgressModule, SpinnerModule, ToastModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SetupComponent } from './setup/setup.component';
@@ -31,7 +31,7 @@ import {AppSharedModule} from '../../shared/app-shared.module';
     ReactiveFormsModule,
     BadgeModule,
     ToastModule,
-    AppSharedModule,ProgressModule
+    AppSharedModule,ProgressModule,SpinnerModule
   ]
 })
 export class PagesModule {
