@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 USER root
 ## install angular components
 ENV NODE_VERSION=16.13.0
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+RUN wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh
 ENV NVM_DIR=/root/.nvm
 RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
