@@ -12,8 +12,12 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 RUN apt update && apt install -y nginx
 ADD nginx.conf /etc/nginx/
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
 RUN npm install
+COPY . ./
 RUN npm run build
+
 RUN groupadd -g 1002360000 nginx && \
 useradd -l -r -d /home/nginx -u 1002360000 -g nginx nginx && \
  chown -R nginx:nginx /var/log/nginx /var/lib/nginx && \
