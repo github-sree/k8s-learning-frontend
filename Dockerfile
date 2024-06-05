@@ -10,6 +10,13 @@ RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
+FROM node:alpine as build-deps
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . ./
+RUN npm run build
+
 RUN apt update && apt install -y nginx
 ADD nginx.conf /etc/nginx/
 WORKDIR /usr/src/app
