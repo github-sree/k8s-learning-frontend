@@ -1,5 +1,7 @@
 ### STAGE 1: Build ###
-FROM node:21-alpine AS build
+FROM alpine:3.19 as build
+ENV NODE_VERSION 22.2.0
+ENV NODE_OPTIONS=--max_old_space_size=1024
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
