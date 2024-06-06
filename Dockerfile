@@ -4,8 +4,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . ./
-RUN pwd && ls -l
-RUN npm run build --prod
+RUN pwd && ls -al
+RUN npm run build --prod --loglevel verbose
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
