@@ -17,7 +17,7 @@ ADD nginx.conf /etc/nginx/
 # USER nginx
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
-
+RUN cd /usr/src/app && ls -l
 ## copy over the artifacts in dist folder to default nginx public folder
 COPY --from=build /usr/src/app/dist/k8s-learning-frontend /usr/share/nginx/html
 
