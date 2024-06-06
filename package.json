@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --extract-css --source-map",
+    "build": "ng build --optimization --progress --source-map=true",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
