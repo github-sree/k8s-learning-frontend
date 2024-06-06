@@ -1,6 +1,6 @@
 ### STAGE 1: Build ###
 FROM node:lts-alpine3.20 as build
-ENV NODE_OPTIONS=--max_old_space_size=1024
+ENV NODE_OPTIONS=--max_old_space_size=900
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
