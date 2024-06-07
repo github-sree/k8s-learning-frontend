@@ -1,31 +1,29 @@
-FROM ubuntu:20.04
-USER root
-## install angular components
-ENV NODE_VERSION=22.2.0
-ENV NODE_OPTIONS=--max_old_space_size=900
-RUN apt update && apt install -y curl
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-ENV NVM_DIR=/root/.nvm
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-RUN apt update && apt install -y nginx
-ADD nginx.conf /etc/nginx/
+### STAGE 1: Build ###
+FROM node AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . ./
-RUN npm run build --prod
-RUN groupadd -g 1002360000 nginx && \
-useradd -l -r -d /home/nginx -u 1002360000 -g nginx nginx && \
- chown -R nginx:nginx /var/log/nginx /var/lib/nginx && \
- chown -R nginx:nginx /etc/nginx/* && chown -R nginx:nginx /var/run/ && \
- chown -R nginx:nginx /usr/share/nginx/
-USER nginx
+RUN ./node_modules/@angular/cli/bin/ng build
+
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+ADD nginx.conf /etc/nginx/
+# RUN groupadd -g 1002360000 nginx && \
+# useradd -l -r -d /home/nginx -u 1002360000 -g nginx nginx && \
+#  chown -R nginx:nginx /var/log/nginx /var/lib/nginx && \
+#  chown -R nginx:nginx /etc/nginx/* && chown -R nginx:nginx /var/run/ && \
+#  chown -R nginx:nginx /usr/share/nginx/
+# USER nginx
 ## Remove default nginx website
+RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
+    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
 RUN rm -rf /usr/share/nginx/html/*
+
+
 ## copy over the artifacts in dist folder to default nginx public folder
-COPY dist/ /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/k8s-learning-frontend /usr/share/nginx/html
+
 EXPOSE 8099
+
 CMD ["nginx", "-g", "daemon off;"]
