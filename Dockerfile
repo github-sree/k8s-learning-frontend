@@ -4,8 +4,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . ./
-RUN pwd && ls -al
-RUN node_modules/@angular/cli/bin/ng build
+RUN pwd && ls -al && 
+RUN /usr/src/app/node_modules/@angular/cli/bin/ng build
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
