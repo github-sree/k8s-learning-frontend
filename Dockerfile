@@ -1,11 +1,12 @@
 ### STAGE 1: Build ###
 FROM node AS build
+ENV NODE_OPTIONS=--max_old_space_size=1024
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . ./
 RUN pwd && ls -al
-RUN /usr/src/app/node_modules/@angular/cli/bin/ng build
+RUN npm run build
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
