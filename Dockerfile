@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM ubuntu:20.04
 USER root
 ## install angular components
 ENV NODE_VERSION=16.13.0
@@ -14,7 +14,7 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN apt update && \
     apt install -y nginx
 ADD nginx.conf /etc/nginx/
-RUN npm build
+RUN npm build --prod
 RUN groupadd -g 1002360000 nginx && \
 useradd -l -r -d /home/nginx -u 1002360000 -g nginx nginx && \
  chown -R nginx:nginx /var/log/nginx /var/lib/nginx && \
